@@ -6,7 +6,6 @@ import (
 	"xmpay/pb"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.novgate.com/common/common/utils"
 	"google.golang.org/grpc"
 )
 
@@ -58,7 +57,7 @@ type OutParam struct {
 
 type PayClientImpl struct {
 	*Config
-	aes      *utils.AES
+	aes      *AES
 	log      *logrus.Entry
 	accessId string
 }

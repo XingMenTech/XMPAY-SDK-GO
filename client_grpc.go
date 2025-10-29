@@ -11,7 +11,6 @@ import (
 	"xmpay/pb"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.novgate.com/common/common/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -49,7 +48,7 @@ func NewGrpcClient(config *Config, log *logrus.Entry) (*GrpcClient, error) {
 	return &GrpcClient{
 		PayClientImpl: PayClientImpl{
 			accessId: config.AccessId,
-			aes:      utils.NewAES([]byte(config.AccessId), []byte(config.AccessKey)),
+			aes:      NewAES([]byte(config.AccessId), []byte(config.AccessKey)),
 			log:      log,
 		},
 		conn:   conn,
@@ -83,7 +82,7 @@ func (c *GrpcClient) CreateVirtual(param *OrderParam) (*pb.VirtualResp, error) {
 		req.NotifyUrl = c.InNotifyUrl
 	}
 	if param.Pid <= 0 {
-		req.Pid = utils.StringToInt32(c.InId)
+		req.Pid = StringToInt32(c.InId)
 	}
 
 	rpcParam := c.encrypt(req)
@@ -127,7 +126,7 @@ func (c *GrpcClient) CreateReceive(param *ReceiveParam) (*pb.ReceiveResp, error)
 		req.NotifyUrl = c.InNotifyUrl
 	}
 	if param.Pid <= 0 {
-		req.Pid = utils.StringToInt32(c.InId)
+		req.Pid = StringToInt32(c.InId)
 	}
 	rpcParam := c.encrypt(req)
 	resp, err := c.client.Receive(ctx, rpcParam)
@@ -195,7 +194,7 @@ func (c *GrpcClient) CreateOut(param *OutParam) (*pb.OutResp, error) {
 		req.NotifyUrl = c.OutNotifyUrl
 	}
 	if param.Pid <= 0 {
-		req.Pid = utils.StringToInt32(c.OutId)
+		req.Pid = StringToInt32(c.OutId)
 	}
 
 	rpcParam := c.encrypt(req)

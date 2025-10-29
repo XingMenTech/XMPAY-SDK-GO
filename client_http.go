@@ -12,7 +12,6 @@ import (
 	"xmpay/pb"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.novgate.com/common/common/utils"
 )
 
 const (
@@ -36,7 +35,7 @@ func NewHttpClient(config *Config, log *logrus.Entry) *HttpClient {
 		PayClientImpl: PayClientImpl{
 			Config:   config,
 			accessId: config.AccessId,
-			aes:      utils.NewAES([]byte(config.AccessId), []byte(config.AccessKey)),
+			aes:      NewAES([]byte(config.AccessId), []byte(config.AccessKey)),
 			log:      log,
 		},
 		apiUrl: config.ApiUrl,
@@ -61,7 +60,7 @@ func (c *HttpClient) CreateVirtual(param *OrderParam) (data *pb.VirtualResp, err
 		req.NotifyUrl = c.InNotifyUrl
 	}
 	if param.Pid <= 0 {
-		req.Pid = utils.StringToInt32(c.InId)
+		req.Pid = StringToInt32(c.InId)
 	}
 	err = c.doRequest(CreateVirtual, http.MethodPost, req, &data)
 
@@ -87,7 +86,7 @@ func (c *HttpClient) CreateReceive(param *ReceiveParam) (data *pb.ReceiveResp, e
 		req.NotifyUrl = c.InNotifyUrl
 	}
 	if param.Pid <= 0 {
-		req.Pid = utils.StringToInt32(c.InId)
+		req.Pid = StringToInt32(c.InId)
 	}
 	err = c.doRequest(CreateReceive, http.MethodPost, req, &data)
 	return
@@ -129,7 +128,7 @@ func (c *HttpClient) CreateOut(param *OutParam) (data *pb.OutResp, err error) {
 		req.NotifyUrl = c.OutNotifyUrl
 	}
 	if param.Pid <= 0 {
-		req.Pid = utils.StringToInt32(c.OutId)
+		req.Pid = StringToInt32(c.OutId)
 	}
 	err = c.doRequest(CreateOut, http.MethodPost, req, &data)
 
