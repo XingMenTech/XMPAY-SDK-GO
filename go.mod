@@ -1,4 +1,4 @@
-module xmpay
+module github.com/XingMenTech/XMPAY-SDK-GO
 
 go 1.22.10
 

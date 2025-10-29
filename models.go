@@ -3,8 +3,8 @@ package xmpay
 import (
 	"encoding/json"
 	"net/http"
-	"xmpay/pb"
 
+	"github.com/XingMenTech/XMPAY-SDK-GO/pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )

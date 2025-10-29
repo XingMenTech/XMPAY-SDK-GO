@@ -8,8 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"xmpay/pb"
-
+	"github.com/XingMenTech/XMPAY-SDK-GO/pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

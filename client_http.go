@@ -9,8 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"xmpay/pb"
-
+	"github.com/XingMenTech/XMPAY-SDK-GO/pb"
 	"github.com/sirupsen/logrus"
 )
 
