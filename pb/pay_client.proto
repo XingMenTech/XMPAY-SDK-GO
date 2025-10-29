@@ -1,0 +1,167 @@
+syntax = "proto3";
+package pb;
+option go_package = "./;pb";
+enum ORDER_STATUS{
+  WAIT = 0;//待处理
+  PROCESSING = 1;//处理中
+  ABNORMAL = 2;//异常
+  FAILURE = 9;//失败
+  SUCCESS = 10;//成功
+}
+
+enum ORDER_TYPE {
+  ALL = 0;
+  RECEIVE = 1;
+  OUT = 2;
+  VIRTUAL = 3;
+}
+
+
+message pay_rpc_resp {
+  int32 code = 1;
+  string message = 2;
+  string data = 3;
+}
+
+message pay_rpc_param{
+  string app_key = 1;
+  string data = 2;
+}
+// 虚拟账户请求参数
+message virtual_param{
+  string order_no = 1;//订单号
+  string uid = 3; //用户ID
+  string ip = 4; //IP地址
+  string email = 5;//邮箱
+  string phone = 6;//手机号
+  string name = 7;//姓名
+  int32  pid = 10;//通道ID
+  string id_num = 11;//身份证号
+  string notify_url = 12; //回调地址
+}
+// 虚拟账户响应结果
+message virtual_resp{
+  string order_no = 1; //订单号
+  string merchant_no = 2;//商户订单号
+  string account_name = 3;//账户名称
+  string account_no = 4;//账户号
+  string pay_url = 5;//付款页面地址
+}
+
+// 收款单请求参数
+message receive_param {
+  string order_no = 1;   //订单号
+  int64 amount = 2;     //订单金额（分）
+  string uid = 3;        //用户ID
+  string ip = 4;         //IP地址
+  string email = 5;      //邮箱
+  string phone = 6;      //手机号
+  string name = 7;       //姓名
+  string mode = 8;       //1支付宝，2微信，3银行卡
+  int32  pid = 9;        //通道ID
+  string id_num = 10;    //身份证号
+  string notify_url = 11;//回调地址
+  string return_url = 12; //跳转地址
+  string subject = 14;   //支付备注
+  string body = 15;      //支付描述
+}
+
+// 收款单响应结果
+message receive_resp {
+  string order_no = 1;//订单号
+  string merchant_no = 2;//商户订单号
+  string pay_url = 3;//付款页面地址
+}
+
+// 付款单请求参数
+message out_param {
+  string order_no = 1;//订单号
+  int64 amount = 2;//金额
+  string uid = 3;//用户ID
+  string ip = 4;//IP地址
+  string email = 5;//邮箱
+  string phone = 6;//手机号
+  string name = 7;//姓名
+  string id_num = 8;//身份证件号码
+  int32  pid = 9;//通道ID
+  string bank_no = 10;//银行账号
+  string bank_code = 11;//银行编码
+  string bank_name = 12;
+  string mode = 13;//1支付宝，2微信，3银行卡
+  string notify_url = 14;//回调地址
+  string subject = 15;   //支付备注
+  string body = 16;      //支付描述
+}
+// 付款单响应结果
+message out_resp{
+  string order_no = 1;//订单号
+  string merchant_no = 2;//商户订单号
+}
+// 订单查询参数
+message order_query_param{
+  string order_no = 1;//订单号
+  string merchant_no = 2;//商户订单号
+}
+
+// 订单查询响应结果
+message order_query_resp{
+  string order_no = 1;//订单号
+  string merchant_no = 2;//商户订单号
+  string pay_no = 3;//支付订单号
+  int64 amount = 4;//金额
+  int64 fee = 5;//手续费
+  ORDER_STATUS status = 6;//状态
+  int64 update_time = 7;//更新时间
+}
+
+message callback_param{
+  string order_no = 1;//订单号
+  string merchant_no = 2;//商户订单号
+  int64 real_amount = 4;//实际金额
+  int64 fee = 5;//平台手续费
+  ORDER_STATUS status = 6;//订单状态
+  string remark = 7; //备注
+  int64 finish_time = 8;//结束时间
+  string uid = 9;//商户用户ID
+}
+
+message channel_query_param{
+  ORDER_TYPE order_type = 1;
+}
+
+// 支付通道查询响应结果
+message channel_query_resp{
+  int64 channel = 1;
+  string name = 2;
+  int32 type = 3;
+  int32 status = 4;
+  int32 pid = 5;
+  int64 single_min = 6;
+  int64 single_max = 7;
+  int64 day_max = 8;
+}
+// 商户余额查询响应结果
+message merchant_balance_resp{
+  string name = 1; //账户名称
+  int64 total = 2;//总余额
+  int64 available = 3;//可用余额
+  int64 settlement = 4;//待结算余额
+
+}
+
+service pay_service {
+  // 创建虚拟账户
+  rpc virtual_account(pay_rpc_param) returns (pay_rpc_resp);
+  //收款单创建
+  rpc receive(pay_rpc_param) returns (pay_rpc_resp);
+  //  收款单查询
+  rpc receive_query(pay_rpc_param) returns (pay_rpc_resp);
+  //  付款单创建
+  rpc out(pay_rpc_param) returns (pay_rpc_resp);
+  //  付款单查询
+  rpc out_query(pay_rpc_param) returns (pay_rpc_resp);
+  //  支付通道查询
+  rpc channel_query(pay_rpc_param) returns (pay_rpc_resp);
+  //  账户余额查询
+  rpc merchant_balance(pay_rpc_param) returns (pay_rpc_resp);
+}
