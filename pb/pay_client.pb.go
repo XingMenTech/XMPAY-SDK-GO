@@ -1155,6 +1155,7 @@ type ChannelQueryResp struct {
 	SingleMin     int64                  `protobuf:"varint,6,opt,name=single_min,json=singleMin,proto3" json:"single_min,omitempty"`
 	SingleMax     int64                  `protobuf:"varint,7,opt,name=single_max,json=singleMax,proto3" json:"single_max,omitempty"`
 	DayMax        int64                  `protobuf:"varint,8,opt,name=day_max,json=dayMax,proto3" json:"day_max,omitempty"`
+	WithdrawMode  []*WithdrawMode        `protobuf:"bytes,9,rep,name=withdraw_mode,json=withdrawMode,proto3" json:"withdraw_mode,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1245,6 +1246,65 @@ func (x *ChannelQueryResp) GetDayMax() int64 {
 	return 0
 }
 
+func (x *ChannelQueryResp) GetWithdrawMode() []*WithdrawMode {
+	if x != nil {
+		return x.WithdrawMode
+	}
+	return nil
+}
+
+type WithdrawMode struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WithdrawMode) Reset() {
+	*x = WithdrawMode{}
+	mi := &file_pay_client_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WithdrawMode) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WithdrawMode) ProtoMessage() {}
+
+func (x *WithdrawMode) ProtoReflect() protoreflect.Message {
+	mi := &file_pay_client_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WithdrawMode.ProtoReflect.Descriptor instead.
+func (*WithdrawMode) Descriptor() ([]byte, []int) {
+	return file_pay_client_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *WithdrawMode) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *WithdrawMode) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 // 商户余额查询响应结果
 type MerchantBalanceResp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1258,7 +1318,7 @@ type MerchantBalanceResp struct {
 
 func (x *MerchantBalanceResp) Reset() {
 	*x = MerchantBalanceResp{}
-	mi := &file_pay_client_proto_msgTypes[13]
+	mi := &file_pay_client_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1270,7 +1330,7 @@ func (x *MerchantBalanceResp) String() string {
 func (*MerchantBalanceResp) ProtoMessage() {}
 
 func (x *MerchantBalanceResp) ProtoReflect() protoreflect.Message {
-	mi := &file_pay_client_proto_msgTypes[13]
+	mi := &file_pay_client_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1283,7 +1343,7 @@ func (x *MerchantBalanceResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MerchantBalanceResp.ProtoReflect.Descriptor instead.
 func (*MerchantBalanceResp) Descriptor() ([]byte, []int) {
-	return file_pay_client_proto_rawDescGZIP(), []int{13}
+	return file_pay_client_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *MerchantBalanceResp) GetName() string {
@@ -1420,7 +1480,7 @@ const file_pay_client_proto_rawDesc = "" +
 	"\x03uid\x18\t \x01(\tR\x03uid\"D\n" +
 	"\x13channel_query_param\x12-\n" +
 	"\n" +
-	"order_type\x18\x01 \x01(\x0e2\x0e.pb.ORDER_TYPER\torderType\"\xd7\x01\n" +
+	"order_type\x18\x01 \x01(\x0e2\x0e.pb.ORDER_TYPER\torderType\"\x8f\x02\n" +
 	"\x12channel_query_resp\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\x03R\achannel\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
@@ -1431,7 +1491,11 @@ const file_pay_client_proto_rawDesc = "" +
 	"single_min\x18\x06 \x01(\x03R\tsingleMin\x12\x1d\n" +
 	"\n" +
 	"single_max\x18\a \x01(\x03R\tsingleMax\x12\x17\n" +
-	"\aday_max\x18\b \x01(\x03R\x06dayMax\"\x7f\n" +
+	"\aday_max\x18\b \x01(\x03R\x06dayMax\x126\n" +
+	"\rwithdraw_mode\x18\t \x03(\v2\x11.pb.withdraw_modeR\fwithdrawMode\"7\n" +
+	"\rwithdraw_mode\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\x7f\n" +
 	"\x15merchant_balance_resp\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x03R\x05total\x12\x1c\n" +
@@ -1475,7 +1539,7 @@ func file_pay_client_proto_rawDescGZIP() []byte {
 }
 
 var file_pay_client_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_pay_client_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_pay_client_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_pay_client_proto_goTypes = []any{
 	(ORDER_STATUS)(0),           // 0: pb.ORDER_STATUS
 	(ORDER_TYPE)(0),             // 1: pb.ORDER_TYPE
@@ -1492,31 +1556,33 @@ var file_pay_client_proto_goTypes = []any{
 	(*CallbackParam)(nil),       // 12: pb.callback_param
 	(*ChannelQueryParam)(nil),   // 13: pb.channel_query_param
 	(*ChannelQueryResp)(nil),    // 14: pb.channel_query_resp
-	(*MerchantBalanceResp)(nil), // 15: pb.merchant_balance_resp
+	(*WithdrawMode)(nil),        // 15: pb.withdraw_mode
+	(*MerchantBalanceResp)(nil), // 16: pb.merchant_balance_resp
 }
 var file_pay_client_proto_depIdxs = []int32{
 	0,  // 0: pb.order_query_resp.status:type_name -> pb.ORDER_STATUS
 	0,  // 1: pb.callback_param.status:type_name -> pb.ORDER_STATUS
 	1,  // 2: pb.channel_query_param.order_type:type_name -> pb.ORDER_TYPE
-	3,  // 3: pb.pay_service.virtual_account:input_type -> pb.pay_rpc_param
-	3,  // 4: pb.pay_service.receive:input_type -> pb.pay_rpc_param
-	3,  // 5: pb.pay_service.receive_query:input_type -> pb.pay_rpc_param
-	3,  // 6: pb.pay_service.out:input_type -> pb.pay_rpc_param
-	3,  // 7: pb.pay_service.out_query:input_type -> pb.pay_rpc_param
-	3,  // 8: pb.pay_service.channel_query:input_type -> pb.pay_rpc_param
-	3,  // 9: pb.pay_service.merchant_balance:input_type -> pb.pay_rpc_param
-	2,  // 10: pb.pay_service.virtual_account:output_type -> pb.pay_rpc_resp
-	2,  // 11: pb.pay_service.receive:output_type -> pb.pay_rpc_resp
-	2,  // 12: pb.pay_service.receive_query:output_type -> pb.pay_rpc_resp
-	2,  // 13: pb.pay_service.out:output_type -> pb.pay_rpc_resp
-	2,  // 14: pb.pay_service.out_query:output_type -> pb.pay_rpc_resp
-	2,  // 15: pb.pay_service.channel_query:output_type -> pb.pay_rpc_resp
-	2,  // 16: pb.pay_service.merchant_balance:output_type -> pb.pay_rpc_resp
-	10, // [10:17] is the sub-list for method output_type
-	3,  // [3:10] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	15, // 3: pb.channel_query_resp.withdraw_mode:type_name -> pb.withdraw_mode
+	3,  // 4: pb.pay_service.virtual_account:input_type -> pb.pay_rpc_param
+	3,  // 5: pb.pay_service.receive:input_type -> pb.pay_rpc_param
+	3,  // 6: pb.pay_service.receive_query:input_type -> pb.pay_rpc_param
+	3,  // 7: pb.pay_service.out:input_type -> pb.pay_rpc_param
+	3,  // 8: pb.pay_service.out_query:input_type -> pb.pay_rpc_param
+	3,  // 9: pb.pay_service.channel_query:input_type -> pb.pay_rpc_param
+	3,  // 10: pb.pay_service.merchant_balance:input_type -> pb.pay_rpc_param
+	2,  // 11: pb.pay_service.virtual_account:output_type -> pb.pay_rpc_resp
+	2,  // 12: pb.pay_service.receive:output_type -> pb.pay_rpc_resp
+	2,  // 13: pb.pay_service.receive_query:output_type -> pb.pay_rpc_resp
+	2,  // 14: pb.pay_service.out:output_type -> pb.pay_rpc_resp
+	2,  // 15: pb.pay_service.out_query:output_type -> pb.pay_rpc_resp
+	2,  // 16: pb.pay_service.channel_query:output_type -> pb.pay_rpc_resp
+	2,  // 17: pb.pay_service.merchant_balance:output_type -> pb.pay_rpc_resp
+	11, // [11:18] is the sub-list for method output_type
+	4,  // [4:11] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_pay_client_proto_init() }
@@ -1530,7 +1596,7 @@ func file_pay_client_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pay_client_proto_rawDesc), len(file_pay_client_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   14,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

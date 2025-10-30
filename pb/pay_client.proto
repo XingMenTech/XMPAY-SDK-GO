@@ -139,6 +139,11 @@ message channel_query_resp{
   int64 single_min = 6;
   int64 single_max = 7;
   int64 day_max = 8;
+  repeated withdraw_mode  withdraw_mode = 9;
+}
+message withdraw_mode{
+  string code = 1;
+  string name = 2;
 }
 // 商户余额查询响应结果
 message merchant_balance_resp{
