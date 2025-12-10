@@ -1,6 +1,6 @@
-P# Pay Client SDK
+# XMPAY-SDK-GO
 
-支付客户端SDK，提供与支付服务端的交互能力，支持gRPC和HTTP两种通信协议。
+XMPAY-SDK-GO 是一个用于与 XMPAY 支付服务进行交互的 go 客户端库。该 SDK 提供了两种通信方式：HTTP 和 gRPC，方便开发者集成支付功能到他们的应用程序中。
 
 ## 目录
 - [功能特性](#功能特性)
@@ -19,17 +19,11 @@ P# Pay Client SDK
 
 ## 功能特性
 
-- 支持gRPC和HTTP两种通信协议
-- 提供统一的接口访问支付服务
-- 自动处理数据加密解密
-- 完整的日志记录功能
-- 支持以下业务功能：
-  - 虚拟账户创建
-  - 收款订单管理
-  - 付款订单管理
-  - 订单查询
-  - 支付通道查询
-  - 商户余额查询
+- 支持 HTTP 和 gRPC 两种通信协议
+- 自动处理请求签名和数据加密
+- 提供完整类型的请求和响应对象
+- 内置错误处理机制
+- 易于集成和使用
 
 ## 安装
 
@@ -39,12 +33,12 @@ go get github.com/XingMenTech/XMPAY-SDK-GO
 
 ## 快速开始
 
-### HTTP客户端
+### 配置
 
+在开始使用 SDK 之前，需要先配置客户端参数：
 ```go
 import "github.com/XingMenTech/XMPAY-SDK-GO"
-
-config := &client.Config{
+var config = &client.Config{
     ApiUrl:       "http://localhost:8080",
     AccessId:     "your_access_id",
     AccessKey:    "your_access_key",
@@ -53,33 +47,8 @@ config := &client.Config{
     InNotifyUrl:  "http://yourdomain.com/notify/receive",
     OutNotifyUrl: "http://yourdomain.com/notify/payment",
 }
-
-httpClient := client.NewHttpClient(config, nil)
 ```
-
-### gRPC客户端
-
-```go
-config := &client.Config{
-    ApiUrl:       "localhost:9090",
-    AccessId:     "your_access_id",
-    AccessKey:    "your_access_key",
-    InId:         "receive_channel_id",
-    OutId:        "payment_channel_id",
-    InNotifyUrl:  "http://yourdomain.com/notify/receive",
-    OutNotifyUrl: "http://yourdomain.com/notify/payment",
-}
-
-grpcClient, err := client.NewGrpcClient(config, nil)
-if err != nil {
-    // 处理错误
-}
-defer grpcClient.Close()
-```
-
-## 使用说明
-
-### 配置参数
+#### 配置参数
 
 | 参数 | 类型 | 描述 |
 |------|------|------|
@@ -91,6 +60,29 @@ defer grpcClient.Close()
 | InNotifyUrl | string | 收款回调地址 |
 | OutNotifyUrl | string | 代付回调地址 |
 
+### HTTP客户端
+
+```go
+httpClient := client.NewHttpClient(config, nil)
+```
+
+### gRPC客户端
+
+```go
+grpcClient, err := client.NewGrpcClient(config, nil)
+if err != nil {
+    // 处理错误
+}
+defer grpcClient.Close()
+```
+
+## API 功能
+### 创建虚拟账户
+
+创建一个虚拟账户用于接收付款：
+```go
+virtualResp, err := client.CreateVirtual(virtualParam)
+```
 ### 创建收款订单
 
 ```go
@@ -151,31 +143,19 @@ resp, err := client.QueryReceive("merchant_order_no", "platform_order_no")
 // 查询付款订单
 resp, err := client.QueryOut("merchant_order_no", "platform_order_no")
 ```
+### 查询商户余额
 
-### 其他功能
-
+查询当前商户的余额信息：
 ```go
-// 查询可用支付通道
-channels, err := client.Channel(pb.ORDER_TYPE_RECEIVE)
-
-// 查询商户余额
 balance, err := client.Balance()
-
-// 创建虚拟账户
-virtualResp, err := client.CreateVirtual(virtualParam)
 ```
 
-## API参考
+### 查询渠道
 
-该SDK提供了以下主要接口：
-
-- `CreateVirtual`: 创建虚拟账户
-- `CreateReceive`: 创建收款订单
-- `QueryReceive`: 查询收款订单
-- `CreateOut`: 创建付款订单
-- `QueryOut`: 查询付款订单
-- `Channel`: 查询支付通道
-- `Balance`: 查询商户余额
+查询可用的支付渠道：
+```go
+channels, err := client.Channel(pb.ORDER_TYPE_RECEIVE)
+```
 
 ## 协议
 
